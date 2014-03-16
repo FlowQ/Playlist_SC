@@ -88,7 +88,7 @@ select, input[type="file"] {
         $list = $bdd->prepare("SELECT title_id from title where tag = :tag GROUP BY title_id ORDER BY count(title_id) DESC");
         foreach ($tags as $value) {
           echo '<div class="col-md-4">';
-          echo '<h4>'.ucfirst($value).'</h4>';
+          echo '<h4>'.ucfirst($value).'<small>  - <a href="del.php?tag='.$value.'">Delete tag</a></small></h4>';
           $list->execute(array("tag" => $value));
           $tracks = $list->fetchall(PDO::FETCH_COLUMN, 0);
           for($i = 0 ; $i < min(3, count($tracks)) ; $i++) {
