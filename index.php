@@ -44,7 +44,7 @@ select, input[type="file"] {
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" /> 
 </head>
-<body>
+<body onLoad="getLists()">
   <div class="container">
     <div class="page-header">  
       <div class="row">
@@ -82,35 +82,26 @@ select, input[type="file"] {
       </form>
    </div>
    <br>
+   <div id="div_iframe" class="row hidden">
+    <iframe id="iframe_sc" width="100%" height="250px" scrolling="no" frameborder="no" src=""></iframe>
+   </div>
    <br>
-   <div class="row">
-     <?php 
-        $list = $bdd->prepare("SELECT title_id from title where tag = :tag GROUP BY title_id ORDER BY count(title_id) DESC");
-        foreach ($tags as $value) {
-          echo '<div class="col-md-4">';
-          echo '<h4>'.ucfirst($value).'<small>  - <a href="del.php?tag='.$value.'">Delete tag</a></small></h4>';
-          $list->execute(array("tag" => $value));
-          $tracks = $list->fetchall(PDO::FETCH_COLUMN, 0);
-          for($i = 0 ; $i < min(3, count($tracks)) ; $i++) {
-            echo '<div class="media">';
-            echo '<iframe class="pull-left media-object" width="80%" height="100px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/'.$tracks[$i].'&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>';
-            echo '
-                  <div class="media-body">
-                    <button onclick="loadDel('.$tracks[$i].',\''.$value.'\')" type="button" class="btn btn-default btn-sm">
-                      <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                  </div>
-                </div>';
-          }
-          echo "</div>";
-        }
-     ?>
-  </div>
+   <div id="id_lists" class="row">
+   </div>
   <br>
   <br>
   <br>
 </body>
 
+<script src="//connect.soundcloud.com/sdk.js"></script>
+<script>
+  SC.initialize({
+  client_id: "99ffbcec925bb866332197af68ba5d9b",
+  redirect_uri: "http://example.com/callback.html",
+  });
+</script>
+
+<script src="js/soundmanager2.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
